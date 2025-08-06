@@ -22,14 +22,7 @@ class BrightspotRetriever(BaseRetriever):
         response = requests.post(self.endpoint_url, data=data)
 
         response.raise_for_status()
-
-        items = response.json()
-        documents = []
-
-        for item in items:
-            documents.append(Document(page_content=json.dumps(item)))
-
-        return documents
+        return [Document(page_content=json.dumps(item)) for item in response.json()]
 
 def rag(llm, retriever, question):
     system_prompt = (
